@@ -45,7 +45,8 @@ public class RacingInputUI {
     private static int inputValidNumber() {
         int numberOfTrials;
         try {
-            numberOfTrials = sc.nextInt();
+            String input = sc.nextLine();
+            numberOfTrials = Integer.parseInt(input);
         } catch (Exception e) {
             numberOfTrials = 0;
         }
