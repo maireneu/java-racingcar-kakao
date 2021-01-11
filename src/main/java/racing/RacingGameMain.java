@@ -1,10 +1,14 @@
 package racing;
 
-import racing.domain.RacingGameLogic;
+import racing.domain.NumberOfTrials;
+import racing.domain.RacingGame;
+import racing.domain.RandomMoveStrategy;
 import racing.view.RacingInputUI;
 import racing.view.RacingOutputUI;
 
 public class RacingGameMain {
+
+    private static RandomMoveStrategy randomMoveStrategy = new RandomMoveStrategy();
 
     public static void main(String[] args) {
         RacingGameMain racingGameMain = new RacingGameMain();
@@ -12,17 +16,17 @@ public class RacingGameMain {
     }
 
     public void run() {
-        int numberOfTrials = RacingInputUI.inputNumberOfTrials();
-        String carNames = RacingInputUI.inputCarNames();
-        RacingGameLogic racingGameLogic = new RacingGameLogic(carNames,numberOfTrials);
-
+        RacingGame racingGame = new RacingGame(RacingInputUI.inputCarNames());
+        NumberOfTrials numberOfTrials = new NumberOfTrials(RacingInputUI.inputNumberOfTrials());
         RacingOutputUI.printPreRacingResult();
 
-        while (racingGameLogic.checkPosition()) {
-            racingGameLogic.race(RandomValue.makeRandomValues(racingGameLogic.getCarsSize()));
-            RacingOutputUI.racePrint(racingGameLogic.getCars());
+        while(numberOfTrials.tryRace()) {
+            racingGame.race(randomMoveStrategy);
+            RacingOutputUI.racePrint(racingGame.getRaceString());
         }
-        RacingOutputUI.printWinner(racingGameLogic.whoAreWinner());
+
+        RacingOutputUI.racePrint(racingGame.getRaceString());
+        RacingOutputUI.printWinner(racingGame.findWinnersName());
     }
 
 }
