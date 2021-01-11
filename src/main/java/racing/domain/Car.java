@@ -2,15 +2,30 @@ package racing.domain;
 
 public class Car {
 
+    private static final int MAX_NAME_SIZE = 5;
     private String name;
     private int position = 0;
 
     public Car(String name) {
+        if( !checkValidationCar(name) ) {
+            throw new IllegalArgumentException();
+        }
         this.name = name;
     }
+
     public Car(String name, int position) {
+        if( !checkValidationCar(name) ) {
+            throw new IllegalArgumentException();
+        }
         this.name = name;
         this.position = position;
+    }
+
+    public static boolean checkValidationCar(String name) {
+        if( name.length() > Car.MAX_NAME_SIZE ) {
+            return false;
+        }
+        return true;
     }
 
     public String getName() {

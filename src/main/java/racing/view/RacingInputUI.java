@@ -1,5 +1,7 @@
 package racing.view;
 
+import racing.domain.Car;
+import racing.domain.Cars;
 import racing.domain.RacingGameLogic;
 
 import java.util.Scanner;
@@ -12,8 +14,19 @@ public class RacingInputUI {
 
 
     public static String inputCarNames() {
-        System.out.println(PRINT_CAR_NAME_QUESTION);
-        return sc.next();
+        String names;
+        do {
+            System.out.println(PRINT_CAR_NAME_QUESTION);
+            names = sc.nextLine();
+        } while(!checkValidationCarNames(names));
+        return names;
+    }
+
+    private static boolean checkValidationCarNames(String names) {
+        if(Cars.checkValidationCars(names) ) {
+            return false;
+        }
+        return true;
     }
 
     public static int inputNumberOfTrials() {
