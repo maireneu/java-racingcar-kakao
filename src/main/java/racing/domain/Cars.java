@@ -16,33 +16,31 @@ public class Cars {
         }
 
         this.cars = Arrays.stream( carNames.split(SEPARATOR_OF_INPUT_CAR_NAME))
-                            .map(name -> new Car(name))
+                            .map(Car::new)
                             .collect(Collectors.toList());
     }
 
     public static boolean checkValidationCars(String carNames) {
         List<String> nameArray = Arrays.asList(carNames.split(SEPARATOR_OF_INPUT_CAR_NAME));
         return nameArray.stream()
-                .filter(name -> Car.checkValidationCar(name) == false)
-                .count() == 0;
-
+                .noneMatch(name -> !Car.checkValidationCar(name));
     }
 
     public void moveCars(MoveStrategy moveStrategy) {
         this.cars.stream()
-                .filter(car -> moveStrategy.movable() == true)
-                .forEach(car -> car.move());
+                .filter(car -> moveStrategy.movable())
+                .forEach(Car::move);
     }
 
     public List<String> whoAreWinner() {
         Integer maxPosition = whereIsWinner();
         return this.cars.stream()
                 .filter(car -> car.isThere(maxPosition))
-                .map(car -> car.getName())
+                .map(Car::getName)
                 .collect(Collectors.toList());
     }
 
-    private Integer whereIsWinner() {
+    public Integer whereIsWinner() {
         return this.cars.stream()
                 .map(Car::getPosition)
                 .max(Integer::compareTo)
@@ -51,7 +49,7 @@ public class Cars {
 
     @Override
     public String toString() {
-        String carsPosition = new String();
+        String carsPosition = "";
 
         for( Car car : this.cars ) {
             carsPosition += car.toString() + "\n";

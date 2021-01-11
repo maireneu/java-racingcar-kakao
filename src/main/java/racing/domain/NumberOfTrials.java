@@ -2,8 +2,8 @@ package racing.domain;
 
 public class NumberOfTrials {
 
-    private static final Integer MIN_TRIALS = 0;
-    private Integer numberOfTrials = 0;
+    private static final Integer MIN_TRIALS = 1;
+    private Integer numberOfTrials;
 
     public NumberOfTrials(int numberOfTrials) {
         if( !checkValidationTrails(numberOfTrials) ) {
@@ -14,10 +14,17 @@ public class NumberOfTrials {
     }
 
     public static boolean checkValidationTrails(int numberOfTrials) {
-        if( numberOfTrials < MIN_TRIALS ) {
-            return false;
-        }
-        return true;
+        return numberOfTrials >= MIN_TRIALS;
     }
+
+    public boolean tryRace(){
+       if(this.numberOfTrials < MIN_TRIALS) {
+           return false;
+       }
+       this.numberOfTrials -= 1;
+       return true;
+    }
+
+
 
 }
