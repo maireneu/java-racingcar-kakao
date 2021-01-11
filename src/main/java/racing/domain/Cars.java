@@ -1,6 +1,5 @@
 package racing.domain;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,18 +28,35 @@ public class Cars {
 
     }
 
-    public List<Car> getCars() {
-        return this.cars;
+    public void moveCars(MoveStrategy moveStrategy) {
+        this.cars.stream()
+                .filter(car -> moveStrategy.movable() == true)
+                .forEach(car -> car.move());
     }
 
-    public int getCarsSize() {
-        return this.cars.size();
-    }
-
-    public List<Integer> getCarsPosition() {
-        return cars.stream()
-                .map(Car::getPosition)
+    public List<String> whoAreWinner() {
+        Integer maxPosition = whereIsWinner();
+        return this.cars.stream()
+                .filter(car -> car.isThere(maxPosition))
+                .map(car -> car.getName())
                 .collect(Collectors.toList());
     }
 
+    private Integer whereIsWinner() {
+        return this.cars.stream()
+                .map(Car::getPosition)
+                .max(Integer::compareTo)
+                .get();
+    }
+
+    @Override
+    public String toString() {
+        String carsPosition = new String();
+
+        for( Car car : this.cars ) {
+            carsPosition += car.toString() + "\n";
+        }
+
+        return carsPosition;
+    }
 }

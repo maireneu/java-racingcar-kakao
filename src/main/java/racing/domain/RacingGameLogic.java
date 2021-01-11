@@ -3,82 +3,34 @@ package racing.domain;
 import racing.RandomValue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class RacingGameLogic {
 
-    private static final String SEPARATOR_OF_INPUT_CAR_NAME = ",";
     private static final String SEPARATOR_OF_WINNERS = ", ";
 
-    private List<Car> cars;
+    private Cars cars;
     private int maxProgressNumber;
 
     public RacingGameLogic(String carsName, int numberOfTrials) {
-        String[] nameArray = carsName.split(SEPARATOR_OF_INPUT_CAR_NAME);
-
-        this.cars = new ArrayList<>();
-        for (String name : nameArray) {
-            this.cars.add(new Car(name));
-        }
-
+        this.cars = new Cars(carsName);
         this.maxProgressNumber = numberOfTrials;
     }
 
-    public List<Car> getCars() {
-        return this.cars;
+    public void race(MoveStrategy moveStrategy) {
+        this.cars.moveCars(moveStrategy);
     }
 
-    public int getCarsSize() {
-        return this.cars.size();
-    }
+    public String findWinnersName() {
+        List<String> winners = this.cars.whoAreWinner();
+        String winnerNames = new String();
 
-    public List<Integer> getCarsPosition() {
-        return cars.stream()
-                .map(Car::getPosition)
-                .collect(Collectors.toList());
-    }
-
-    public boolean checkPosition() {
-        int maxPosition = 0;
-
-        for (Car car : this.cars) {
-            maxPosition = Math.max(maxPosition, car.getPosition());
+        for(String name: winners) {
+            winnerNames += name + SEPARATOR_OF_WINNERS;
         }
 
-        return maxPosition < this.maxProgressNumber;
+        return winnerNames.substring(0, winnerNames.length()-SEPARATOR_OF_WINNERS.length());
     }
-
-    public void race(List<Boolean> randomValues) {
-        for (int i = 0; i < this.cars.size(); i++) {
-            this.decideGoOrStop(this.cars.get(i), randomValues.get(i));
-        }
-    }
-
-    private void decideGoOrStop(Car car, Boolean randomValue) {
-        if( randomValue ) {
-            car.move();
-        }
-    }
-
-    public String whoAreWinner() {
-        StringBuilder winners = new StringBuilder();
-        List<Integer> resultPosition = this.getCarsPosition();
-
-        for (int i = 0; i < resultPosition.size(); i++) {
-            winners.append(this.isWinner(i, maxProgressNumber));
-        }
-
-        return winners.toString();
-    }
-
-    private String isWinner(int index, int maxProgressNumber) {
-
-        if(cars.get(index).getPosition() == maxProgressNumber) {
-            return cars.get(index).getName() + SEPARATOR_OF_WINNERS;
-        }
-
-        return "";
-    }
-
 }
