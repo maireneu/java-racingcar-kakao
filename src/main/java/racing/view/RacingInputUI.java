@@ -24,7 +24,7 @@ public class RacingInputUI {
     }
 
     private static boolean checkValidationCarNames(String names) {
-        if(Cars.checkValidationCars(names) ) {
+        if(!Cars.checkValidationCars(names) ) {
             System.out.println(PRINT_CAR_NAME_VALIDATION_ERROR);
             return false;
         }
@@ -32,7 +32,7 @@ public class RacingInputUI {
     }
 
     public static int inputNumberOfTrials() {
-        int numberOfTrials = 0;
+        int numberOfTrials;
 
         do {
             System.out.println(PRINT_TRIALS_QUESTION);

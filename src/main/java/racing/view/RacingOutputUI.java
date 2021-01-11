@@ -1,6 +1,7 @@
 package racing.view;
 
 import racing.domain.Car;
+import racing.domain.RacingGame;
 
 import java.util.List;
 
@@ -18,14 +19,11 @@ public class RacingOutputUI {
     }
 
     public static void printWinner(String winners) {
-        System.out.print(winners.substring(0, winners.length() - 2) + PRINT_RESULT_TAILS);
+        System.out.print(winners.substring(0, winners.length() - RacingGame.SEPARATOR_OF_WINNERS.length()) + PRINT_RESULT_TAILS);
     }
 
-    public static void racePrint(List<Car> cars) {
-        for (Car car : cars) {
-            System.out.println(car);
-        }
-        System.out.println();
+    public static void racePrint(String racePositions) {
+        System.out.println(racePositions);
     }
 
 }
